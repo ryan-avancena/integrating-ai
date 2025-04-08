@@ -4,7 +4,7 @@ import cv2
 import time
 
 # Load the Face Landmarker model
-model_path = 'face_landmarker.task'
+model_path = './models/face_landmarker.task'
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -13,8 +13,8 @@ mp_drawing_styles = mp.solutions.drawing_styles
 tesselation_color = (0, 255, 0) 
  
 contour_color = (0, 0, 255)     
-tesselation_specs = mp_drawing.DrawingSpec(color=tesselation_color, thickness=1)
-contour_specs = mp_drawing.DrawingSpec(color=contour_color, thickness=1)
+tesselation_specs = mp_drawing.DrawingSpec(color=tesselation_color, thickness=2)
+contour_specs = mp_drawing.DrawingSpec(color=contour_color, thickness=2)
 
 cap = cv2.VideoCapture(0)   # change to 1 if you have an iphone
 
