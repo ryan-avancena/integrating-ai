@@ -1,7 +1,6 @@
 import whisper
 import sounddevice as sd
 import numpy as np
-# import torch
 
 model = whisper.load_model("base")  # use "small" if you want better quality
 
