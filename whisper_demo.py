@@ -3,6 +3,8 @@ import sounddevice as sd
 import numpy as np
 
 model = whisper.load_model("base")  # use "small" if you want better quality
+result = model.transcribe("1d.mp3")
+print(result["text"])
 
 samplerate = 16000  # Whisper expects 16kHz
 block_duration = 5  # seconds per block

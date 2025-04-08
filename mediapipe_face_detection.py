@@ -16,7 +16,7 @@ contour_color = (0, 0, 255)
 tesselation_specs = mp_drawing.DrawingSpec(color=tesselation_color, thickness=2)
 contour_specs = mp_drawing.DrawingSpec(color=contour_color, thickness=2)
 
-cap = cv2.VideoCapture(0)   # change to 1 if you have an iphone
+cap = cv2.VideoCapture(1)   # change to 0 if you have an iphone
 
 mp_face_mesh = mp.solutions.face_mesh
 
