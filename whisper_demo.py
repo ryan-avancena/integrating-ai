@@ -1,14 +1,15 @@
 import whisper
 import sounddevice as sd
 import numpy as np
+# import torch
 
 model = whisper.load_model("base")  # use "small" if you want better quality
-<<<<<<< HEAD
-=======
-model = whisper.load_model("small")
->>>>>>> 90b2da6 (changes)
 result = model.transcribe("1d.mp3")
 print(result["text"])
+
+
+
+""" transcribing the live audio ... """
 
 samplerate = 16000  # Whisper expects 16kHz
 block_duration = 5  # seconds per block

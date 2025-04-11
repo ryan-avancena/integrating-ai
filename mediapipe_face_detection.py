@@ -3,35 +3,25 @@ import numpy as np
 import cv2
 import time
 
-# Load the Face Landmarker model
+# Face Landmarker model
 model_path = './models/face_landmarker.task'
-
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-# Set initial drawing specifications with default colors
+# initial drawing specifications with green
 tesselation_color = (0, 255, 0) 
  
 contour_color = (0, 0, 255)     
 tesselation_specs = mp_drawing.DrawingSpec(color=tesselation_color, thickness=2)
 contour_specs = mp_drawing.DrawingSpec(color=contour_color, thickness=2)
 
-<<<<<<< HEAD
+""" change the number to any of the indices outputted by test_camera.py """
 cap = cv2.VideoCapture(1)   # change to 0 if you have an iphone
-=======
-""" CHANGE THE NUMBER TO ONE OF THE INDEXES OUTPUTTED BY test_camera.py"""
-cap = cv2.VideoCapture(0)   
-
-
-
-
 
 
 
 
 """ cool stuff """
->>>>>>> 90b2da6 (changes)
-
 mp_face_mesh = mp.solutions.face_mesh
 
 with mp_face_mesh.FaceMesh(
