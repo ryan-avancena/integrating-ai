@@ -16,7 +16,21 @@ contour_color = (0, 0, 255)
 tesselation_specs = mp_drawing.DrawingSpec(color=tesselation_color, thickness=2)
 contour_specs = mp_drawing.DrawingSpec(color=contour_color, thickness=2)
 
+<<<<<<< HEAD
 cap = cv2.VideoCapture(1)   # change to 0 if you have an iphone
+=======
+""" CHANGE THE NUMBER TO ONE OF THE INDEXES OUTPUTTED BY test_camera.py"""
+cap = cv2.VideoCapture(0)   
+
+
+
+
+
+
+
+
+""" cool stuff """
+>>>>>>> 90b2da6 (changes)
 
 mp_face_mesh = mp.solutions.face_mesh
 

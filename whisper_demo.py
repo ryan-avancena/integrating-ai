@@ -3,6 +3,10 @@ import sounddevice as sd
 import numpy as np
 
 model = whisper.load_model("base")  # use "small" if you want better quality
+<<<<<<< HEAD
+=======
+model = whisper.load_model("small")
+>>>>>>> 90b2da6 (changes)
 result = model.transcribe("1d.mp3")
 print(result["text"])
 

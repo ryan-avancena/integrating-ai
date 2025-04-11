@@ -20,7 +20,7 @@ options = vision.GestureRecognizerOptions(
 # Create the recognizer
 recognizer = vision.GestureRecognizer.create_from_options(options)
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)       # change this to the camera index from test_camera.py
 
 while cap.isOpened():
     success, frame = cap.read()
