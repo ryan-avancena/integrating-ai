@@ -5,22 +5,23 @@ import time
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision  
 
-# Load the Gesture Recognizer model
+# set up model
 model_path = './models/gesture_recognizer.task'
-
-# Set up model options
 base_options = python.BaseOptions(model_asset_path=model_path)
 
-# Choose the mode (VIDEO mode expects you to pass in frame sequences)
+# choose the mode (VIDEO mode expects you to pass in frame sequences)
 options = vision.GestureRecognizerOptions(
     base_options=base_options,
     running_mode=vision.RunningMode.VIDEO
 )
 
-# Create the recognizer
+# getting the recognizer
 recognizer = vision.GestureRecognizer.create_from_options(options)
 
-cap = cv2.VideoCapture(0)       # change this to the camera index from test_camera.py
+
+""" change the number to any of the indices outputted by test_camera.py """
+cap = cv2.VideoCapture(0)      
+
 
 while cap.isOpened():
     success, frame = cap.read()
