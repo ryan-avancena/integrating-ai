@@ -46,7 +46,8 @@ while cap.isOpened():
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
     result = recognizer.detect_for_video(mp_image, timestamp)
 
-    stick_figure = np.zeros_like(frame)
+    # stick_figure = np.zeros_like(frame)
+    # stick_figure = np.ones_like(frame) * 255
 
     if result.pose_landmarks:
         landmarks = result.pose_landmarks[0]
@@ -61,9 +62,12 @@ while cap.isOpened():
         for connection in POSE_CONNECTIONS:
             start_idx, end_idx = connection
             if start_idx < len(points) and end_idx < len(points):
-                cv2.line(stick_figure, points[start_idx], points[end_idx], (0, 255, 0), 2)
+                # cv2.line(stick_figure, points[start_idx], points[end_idx], (0, 0, 0), 2)
+                cv2.line(frame, points[start_idx], points[end_idx], (0, 255, 0), 2)  # Green lines
 
-    cv2.imshow('mona lisa', stick_figure)
+
+    # cv2.imshow('mona lisa', stick_figure)
+    cv2.imshow('mona lisa', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

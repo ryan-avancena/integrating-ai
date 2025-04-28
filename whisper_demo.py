@@ -4,15 +4,9 @@ import numpy as np
 import json
 from datetime import datetime
 
-<<<<<<< HEAD
-model = whisper.load_model("base")  # use "small" if you want better quality
-result = model.transcribe("1d.mp3")
-print(result["text"])
-=======
 model = whisper.load_model("medium")
 samplerate = 16000  # Whisper expects 16kHz
 block_duration = 5  # seconds per block
->>>>>>> a363895 (added dance)
 
 all_transcriptions = []
 
@@ -23,25 +17,6 @@ def callback(indata, frames, time, status):
     audio_np = indata[:, 0]  # mono
     audio_float32 = audio_np.astype(np.float32)
 
-<<<<<<< HEAD
-samplerate = 16000  # Whisper expects 16kHz
-block_duration = 5  # seconds per block
-
-def callback(indata, frames, time, status):
-    if status:
-        print("Status:", status)
-
-    audio_np = indata[:, 0]  # mono channel
-    audio_float32 = audio_np.astype(np.float32)
-
-    # Normalize to -1.0 to 1.0 if needed
-    if np.max(np.abs(audio_float32)) > 1:
-        audio_float32 = audio_float32 / np.max(np.abs(audio_float32))
-
-    print("Transcribing...")
-    result = model.transcribe(audio_float32, language="en")
-    print("You said:", result["text"])
-=======
     if np.max(np.abs(audio_float32)) > 1:
         audio_float32 = audio_float32 / np.max(np.abs(audio_float32))
 
@@ -66,7 +41,6 @@ def callback(indata, frames, time, status):
 
     all_transcriptions.append(block_data)
     print("You said:", text)
->>>>>>> a363895 (added dance)
 
 print("Listening in blocks of", block_duration, "seconds. Press Ctrl+C to stop.")
 
@@ -79,12 +53,9 @@ try:
 
 except KeyboardInterrupt:
     print("Stopped.")
-<<<<<<< HEAD
-=======
 
     # Save to a JSON file when stopped
     with open("transcription_log.json", "w") as f:
         json.dump(all_transcriptions, f, indent=4)
 
     print("Transcriptions saved to 'transcription_log.json'.")
->>>>>>> a363895 (added dance)
