@@ -5,7 +5,7 @@ from mediapipe.tasks.python import vision
 import cv2
 import time
 
-# Load model
+# loading the model
 model_path = './models/pose_landmarker_full.task'
 base_options = python.BaseOptions(model_asset_path=model_path)
 
@@ -16,12 +16,12 @@ options = vision.PoseLandmarkerOptions(
 
 recognizer = vision.PoseLandmarker.create_from_options(options)
 
-# Start webcam
+# starting the webcam
 cap = cv2.VideoCapture(0)
 start_time = time.time()
 
-# Pairs of landmark indices to connect for stick figure
-# These are from MediaPipe's pose landmark model
+
+# pairs of landmark indices to connect for stick figure
 POSE_CONNECTIONS = [
     (0, 1), (1, 2), (2, 3), (3, 7),     # Right arm
     (0, 4), (4, 5), (5, 6), (6, 8),     # Left arm
@@ -65,7 +65,7 @@ while cap.isOpened():
             if start_idx < len(points) and end_idx < len(points):
                 cv2.line(stick_figure, points[start_idx], points[end_idx], (0, 255, 0), 2)
 
-    cv2.imshow('Stick Figure Pose', stick_figure)
+    cv2.imshow('You', stick_figure)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

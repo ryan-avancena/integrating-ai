@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+    <title>dance practice tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>super duper dance tool</h1>
+    <div class="main-container">
+        <div class="video-rec-container">
+            <div class="video-container">
+                <div>
+                    <h3>reference video</h3>
+                    <video id="reference" controls>
+                        <source src="{{ url_for('static', filename='throw.MP4') }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <div class="rec-container">
+                <h3>playback</h3>
+                <video id="recorded" controls></video>
+            </div>
+        </div>
+
+        <div class="live-container">
+            <h3>live video feed</h3>
+            <video id="webcam" width="480" height="360" autoplay muted></video>
+        
+            <div id="controls">
+                <button id="recordBtn" title="Record"></button>
+                <button id="playSyncBtn" disabled title="Play"></button>
+                <button id="pauseSyncBtn" disabled title="Pause"></button>
+            <div id="countdown"></div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        const webcamVideo = document.getElementById('webcam');
+        const recordedVideo = document.getElementById('recorded');
+        const referenceVideo = document.getElementById('reference');
+        const recordBtn = document.getElementById('recordBtn');
+        const playSyncBtn = document.getElementById('playSyncBtn');
+        const pauseSyncBtn = document.getElementById('pauseSyncBtn');
+        const countdownEl = document.getElementById('countdown');
+
+        let mediaRecorder;
+        let recordedChunks = [];
+        let isRecording = false;
+        let countdownTimer;
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            .then(stream => {
+                webcamVideo.srcObject = stream;
+
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) {
+                        recordedChunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const videoURL = URL.createObjectURL(blob);
+                    recordedVideo.src = videoURL;
+
+                    playSyncBtn.disabled = false;
+                    pauseSyncBtn.disabled = false;
+                };
+
+                recordBtn.addEventListener('click', () => {
+                    if (!isRecording) {
+                        startCountdown(3);
+                    } else {
+                        stopRecording();
+                    }
+                });
+
+                function startCountdown(seconds) {
+                    recordBtn.disabled = true;
+                    let count = seconds;
+                    countdownEl.textContent = count;
+
+                    countdownTimer = setInterval(() => {
+                        count--;
+                        if (count > 0) {
+                            countdownEl.textContent = count;
+                        } else {
+                            clearInterval(countdownTimer);
+                            countdownEl.textContent = '';
+
+                            referenceVideo.currentTime = 0;
+                            referenceVideo.play();
+
+                            startRecording();
+                        }
+                    }, 1000);
+                }
+
+                function startRecording() {
+                    recordedChunks = [];
+                    mediaRecorder.start();
+                    recordBtn.innerHTML = '⏹️'; // Red square emoji (stop)
+                    recordBtn.style.backgroundColor = 'red';
+                    recordBtn.disabled = false;
+                    isRecording = true;
+
+                    playSyncBtn.disabled = true;
+                    pauseSyncBtn.disabled = true;
+                }
+
+                function stopRecording() {
+                    mediaRecorder.stop();
+                    recordBtn.innerHTML = '🔴'; // Red circle emoji (record)
+                    recordBtn.style.backgroundColor = 'white';
+                    isRecording = false;
+                }
+
+                function stopRecording() {
+                    mediaRecorder.stop();
+                    recordBtn.textContent = 'Start Recording';
+                    isRecording = false;
+                }
+            })
+            .catch(err => {
+                alert('Could not access webcam: ' + err.name + ': ' + err.message);
+            });
+
+        // ✅ Sync playback with reference video speed
+        playSyncBtn.addEventListener('click', () => {
+            const speed = referenceVideo.playbackRate;
+            recordedVideo.playbackRate = speed;
+
+            referenceVideo.currentTime = 0;
+            recordedVideo.currentTime = 0;
+
+            referenceVideo.play();
+            recordedVideo.play();
+        });
+
+        // ✅ Keep speeds in sync if user changes speed manually
+        referenceVideo.addEventListener('ratechange', () => {
+            recordedVideo.playbackRate = referenceVideo.playbackRate;
+        });
+
+        pauseSyncBtn.addEventListener('click', () => {
+            referenceVideo.pause();
+            recordedVideo.pause();
+        });
+
+        function syncTime(event) {
+            const time = event.target.currentTime;
+            if (event.target === referenceVideo) {
+                if (Math.abs(recordedVideo.currentTime - time) > 0.3) {
+                    recordedVideo.currentTime = time;
+                }
+            } else if (event.target === recordedVideo) {
+                if (Math.abs(referenceVideo.currentTime - time) > 0.3) {
+                    referenceVideo.currentTime = time;
+                }
+            }
+        }
+
+        referenceVideo.addEventListener('seeking', syncTime);
+        recordedVideo.addEventListener('seeking', syncTime);
+
+        referenceVideo.addEventListener('ended', () => recordedVideo.pause());
+        recordedVideo.addEventListener('ended', () => referenceVideo.pause());
+    </script>
